@@ -10,7 +10,12 @@ namespace FTP_mini_client
     {
         static void Main(string[] args)
         {
-            Client A = new Client("ftp://ftp.mozilla.org/pub/mozilla.org/");
+            Console.WriteLine("Commands list:");
+            Console.WriteLine("connect 'connect ftp://ftp.mozilla.org/pub/mozilla.org'");
+            Console.WriteLine("move 'move folder'");
+            Console.WriteLine("moveback");
+            Console.WriteLine("download 'download file' '\n");
+            Client A = new Client();
             string consoleCommand = " ";
             string[] commandSplit;
             do
@@ -20,6 +25,19 @@ namespace FTP_mini_client
 
                 switch (commandSplit[0])
                 {
+                    case "connect":
+                        try
+                        {
+                            A.connect(commandSplit[1] + "/");
+                        }
+
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+
+                        break;
+
                     case "move":
                         try
                         {

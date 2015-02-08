@@ -13,7 +13,7 @@ namespace FTP_mini_client
         string url;
         string prvsUrl;
 
-        public Client(string newUrl)
+        public void  connect(string newUrl)
         {
             prvsUrl = newUrl;
             url = newUrl;
