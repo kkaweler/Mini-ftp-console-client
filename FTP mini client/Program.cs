@@ -15,70 +15,42 @@ namespace FTP_mini_client
             Console.WriteLine("move 'move folder'");
             Console.WriteLine("moveback");
             Console.WriteLine("download 'download file' '\n");
-            Client A = new Client();
-            string consoleCommand = " ";
+            Client client = new Client();
+            string.EMPTY consoleCommand;
             string[] commandSplit;
             do
             {
                 consoleCommand = Console.ReadLine();
                 commandSplit = consoleCommand.Split(new Char[] { ' ' });
-
-                switch (commandSplit[0])
+                try
                 {
-                    case "connect":
-                        try
-                        {
-                            A.connect(commandSplit[1] + "/");
-                        }
+                    switch (commandSplit[0])
+                    {
+                        case "connect":
+                            client.connect(commandSplit[1] + "/");
+                            break;
 
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                        }
+                        case "move":
+                            client.moveToDir(commandSplit[1]+"/");
+                            break;
 
-                        break;
+                        case "moveback":
+                            client.moveBack();
+                            break;
 
-                    case "move":
-                        try
-                        {
-                            A.moveToDir(commandSplit[1]+"/");
-                        }
+                        case "download":
+                            client.dowloadFile(commandSplit[1]);
+                            break;
 
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                        }
-
-                        break;
-
-                    case "moveback":
-                        try
-                        {
-                            A.moveBack();
-                        }
-
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                        } 
-                        break;
-
-                    case "download":
-                        try
-                        {
-                            A.dowloadFile(commandSplit[1]);
-                        }
-
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                        }
-                        break;
-
-                    default :
-                        Console.WriteLine("Unknown command " + commandSplit[0]);
-                        break;
+                        default :
+                            Console.WriteLine("Unknown command " + commandSplit[0]);
+                            break;
+                    }
                 }
+                catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
             }
             while (consoleCommand != "exit");
         }
