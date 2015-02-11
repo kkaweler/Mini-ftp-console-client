@@ -27,19 +27,19 @@ namespace FTP_mini_client
                     switch (commandSplit[0])
                     {
                         case "connect":
-                            client.connect(commandSplit[1] + "/");
+                            client.Connect(commandSplit[1] + "/");
                             break;
 
                         case "move":
-                            client.moveToDir(commandSplit[1]+"/");
+                            client.MoveToDir(commandSplit[1]+"/");
                             break;
 
                         case "moveback":
-                            client.moveBack();
+                            client.MoveBack();
                             break;
 
                         case "download":
-                            client.dowloadFile(commandSplit[1]);
+                            client.DowloadFile(commandSplit[1]);
                             break;
 
                         default :
