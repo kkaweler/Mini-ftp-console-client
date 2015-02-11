@@ -49,7 +49,7 @@ namespace FTP_mini_client
                 }
                 catch (Exception e)
                         {
-                            Console.WriteLine(e);
+                            Console.WriteLine(e.Message);
                         }
             }
             while (consoleCommand != "exit");
