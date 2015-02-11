@@ -10,20 +10,19 @@ namespace FTP_mini_client
 {
     class Client
     {
-        string url;
-        string prvsUrl;
+        protected string url;
+        protected Stack prvsUrl = new Stack();
 
-        public void  connect(string newUrl)
+        public void  Connect(string newUrl)
         {
-            prvsUrl = newUrl;
             url = newUrl;
-            FtpWebRequest request = createRequest(url);
-            getDirList(request);
-            getResponse(request);
+            FtpWebRequest request = CreateRequest(url);
+            GetDirList(request);
+            GetResponse(request);
  
         }
 
-        public void getResponse(FtpWebRequest  request)
+        public void GetResponse(FtpWebRequest  request)
         {
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
             Stream responseStream = response.GetResponseStream();
@@ -31,49 +30,54 @@ namespace FTP_mini_client
             Console.WriteLine(reader.ReadToEnd());
         }
 
-        public FtpWebRequest createRequest(string url)
+        public FtpWebRequest CreateRequest(string url)
         {
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(url);
-            request.Credentials = new NetworkCredential ("anonymous","kkaweler@gmail.com");
+            request.Credentials = new NetworkCredential ("anonymous","anonymous@gmail.com");
             return request;
         }
 
-        public void getDirList(FtpWebRequest request)
+        public void GetDirList(FtpWebRequest request)
         {
             Console.WriteLine("Folder and files in " + url);
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 
         }
-        public void moveToDir(string newUrl)
+        public void MoveToDir(string newUrl)
         {
-            prvsUrl = url;
+            prvsUrl.Push(url);
             url+= newUrl;
-            FtpWebRequest request = createRequest(url);
-            getDirList(request);
-            getResponse(request);
+            FtpWebRequest request = CreateRequest(url);
+            GetDirList(request);
+            GetResponse(request);
         }
 
-        public void moveBack()
+        public void MoveBack()
         {
-            url = prvsUrl;
-            FtpWebRequest request = createRequest(url);
-            getDirList(request);
-            getResponse(request);
+            url = prvsUrl.Pop;
+            FtpWebRequest request = CreateRequest(url);
+            GetDirList(request);
+            GetResponse(request);
  
         }
 
         public void dowloadFile(string fileName)
         {
-            FtpWebRequest request = createRequest(url+fileName);
+            FtpWebRequest request = CreateRequest(url+fileName);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
             Stream responseStream = response.GetResponseStream();
-            FileStream file = File.Create(fileName);
+            /*FileStream file = File.Create(fileName);
             byte[] buffer = new byte[512 * 1024];
             int read;
             while ((read = responseStream.Read(buffer, 0, buffer.Length)) > 0)
             {
                 file.Write(buffer, 0, read);
+            }*/
+            using (FileStream file = new FileStream(name, FileMode.OpenOrCreate))
+            {
+                byte[] array = System.Text.Encoding.Default.GetBytes(reader.ReadToEnd());
+                file.Write(array, 0, array.Length);
             }
             file.Close();
             responseStream.Close();
