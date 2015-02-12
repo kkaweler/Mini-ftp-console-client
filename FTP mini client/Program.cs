@@ -16,7 +16,7 @@ namespace FTP_mini_client
             Console.WriteLine("moveback");
             Console.WriteLine("download 'download file' '\n");
             Client client = new Client();
-            string.EMPTY consoleCommand;
+            string consoleCommand;
             string[] commandSplit;
             do
             {

@@ -11,7 +11,7 @@ namespace FTP_mini_client
     class Client
     {
         protected string url;
-        protected Stack prvsUrl = new Stack();
+        protected Stack<string> prvsUrl = new Stack<string>();
 
         public void  Connect(string newUrl)
         {
@@ -54,34 +54,30 @@ namespace FTP_mini_client
 
         public void MoveBack()
         {
-            url = prvsUrl.Pop;
+            url = prvsUrl.Pop();
             FtpWebRequest request = CreateRequest(url);
             GetDirList(request);
             GetResponse(request);
  
         }
 
-        public void dowloadFile(string fileName)
+        public void DowloadFile(string fileName)
         {
             FtpWebRequest request = CreateRequest(url+fileName);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
             Stream responseStream = response.GetResponseStream();
-            /*FileStream file = File.Create(fileName);
-            byte[] buffer = new byte[512 * 1024];
-            int read;
-            while ((read = responseStream.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                file.Write(buffer, 0, read);
-            }*/
-            using (FileStream file = new FileStream(name, FileMode.OpenOrCreate))
+            StreamReader reader = new StreamReader(responseStream);
+            using (FileStream file = new FileStream(fileName, FileMode.OpenOrCreate))
             {
                 byte[] array = System.Text.Encoding.Default.GetBytes(reader.ReadToEnd());
                 file.Write(array, 0, array.Length);
-            }
+            
             file.Close();
             responseStream.Close();
             response.Close();
+            reader.Close();
+            }
             Console.WriteLine("Download Complete, status {0}", response.StatusDescription);
         }
     }
