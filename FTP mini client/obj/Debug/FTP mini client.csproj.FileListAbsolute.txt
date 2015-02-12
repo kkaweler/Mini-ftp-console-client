@@ -1,0 +1,1 @@
+d:\Git\Mini-ftp-console-client\FTP mini client\bin\Debug\FTP mini client.exe.config
